@@ -35,7 +35,6 @@
         settings: "settings",
         media: "media",
         users: "users",
-        translation: "translation",
     }
 }
 

@@ -20,7 +20,6 @@ import {MemberApiHelper} from "./MemberApiHelper";
 import {MemberGroupApiHelper} from "./MemberGroupApiHelper";
 import {MediaApiHelper} from "./MediaApiHelper";
 import {DomainApiHelper} from "./DomainApiHelper";
-import {TranslationApiHelper} from "./TranslationApiHelper";
 
 export class ApiHelpers {
   baseUrl: string = umbracoConfig.environment.baseUrl;
@@ -44,7 +43,6 @@ export class ApiHelpers {
   users: UserApiHelper;
   media: MediaApiHelper;
   domain: DomainApiHelper;
-  translation: TranslationApiHelper;
 
   constructor(page: Page) {
     this.content = new ContentApiHelper(this);
@@ -67,20 +65,18 @@ export class ApiHelpers {
     this.users = new UserApiHelper(this);
     this.media = new MediaApiHelper(this);
     this.domain = new DomainApiHelper(this);
-    this.translation = new TranslationApiHelper(this);
   }
 
   async getCsrfToken() {
     return (await this.page.context().cookies()).filter(x => x.name === 'UMB-XSRF-TOKEN')[0].value;
   }
 
-  async get(url: string, params?: { [key: string]: string | number | boolean; }) {
+  async get(url: string) {
     const csrf = await this.getCsrfToken();
     const options = {
       headers: {
         'X-UMB-XSRF-TOKEN': csrf
       },
-      params: params,
       ignoreHTTPSErrors: true
     }
     return this.page.request.get(url, options);
